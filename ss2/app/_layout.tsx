@@ -23,7 +23,7 @@ const Layout = () => {
         <E6 />
         <E7 />
         <E8 />
-        <ETH />
+        <ETH/>
       </ScrollView>
     </SafeAreaView>
   )

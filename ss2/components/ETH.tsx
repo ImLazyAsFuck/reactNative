@@ -1,16 +1,16 @@
-import { ArrowLeft, Heart, Star } from 'lucide-react-native'
 import React, { useState } from 'react'
 import {
     Dimensions,
     Image,
     Pressable,
-    SafeAreaView,
     ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
     View
 } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Icon from 'react-native-vector-icons/Feather'
 
 const { width } = Dimensions.get('window')
 
@@ -31,17 +31,17 @@ const ETH = () => {
           />
           
           <TouchableOpacity style={[styles.iconButton, styles.backButton]}>
-            <ArrowLeft size={24} color="#333" />
+            <Icon name="arrow-left" size={24} color="#333" />
           </TouchableOpacity>
           
           <TouchableOpacity 
             style={[styles.iconButton, styles.favoriteButton]}
             onPress={() => setIsFavorite(!isFavorite)}
           >
-            <Heart 
+            <Icon 
+              name="heart" 
               size={24} 
               color={isFavorite ? "#FF6B6B" : "#333"} 
-              fill={isFavorite ? "#FF6B6B" : "transparent"}
             />
           </TouchableOpacity>
         </View>
@@ -51,7 +51,7 @@ const ETH = () => {
           
           <View style={styles.ratingContainer}>
             <View style={styles.ratingStars}>
-              <Star size={16} color="#FFD700" fill="#FFD700" />
+              <Icon name="star" size={16} color="#FFD700" />
               <Text style={styles.ratingText}>4.9</Text>
             </View>
             <Text style={styles.reviewCount}>| 86 Đánh giá</Text>
