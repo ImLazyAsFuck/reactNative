@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import {
   Alert,
   FlatList,
@@ -11,17 +11,68 @@ import {
 
 interface Task {
   id: string;
-  title: string;
+  name: string;
+  completed: boolean;
 }
 
+type TodoAction =
+  | { type: "ADD_TODO"; payload: string }
+  | { type: "TOGGLE_TODO"; payload: string }
+  | { type: "DELETE_TODO"; payload: string };
+
+interface TodoState {
+  todos: Task[];
+}
+
+const initialState: TodoState = {
+  todos: [],
+};
+const todoReducer = (state: TodoState, action: TodoAction): TodoState => {
+  switch (action.type) {
+    case "ADD_TODO":
+      if (action.payload.trim() === "") return state;
+      const newTodo: Task = {
+        id: Date.now().toString(),
+        name: action.payload.trim(),
+        completed: false,
+      };
+      return {
+        ...state,
+        todos: [...state.todos, newTodo],
+      };
+
+    case "TOGGLE_TODO":
+      return {
+        ...state,
+        todos: state.todos.map((todo) =>
+          todo.id === action.payload
+            ? { ...todo, completed: !todo.completed }
+            : todo
+        ),
+      };
+
+    case "DELETE_TODO":
+      return {
+        ...state,
+        todos: state.todos.filter((todo) => todo.id !== action.payload),
+      };
+
+    default:
+      return state;
+  }
+};
+
 const E5 = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [state, dispatch] = useReducer(todoReducer, initialState);
   const [taskInput, setTaskInput] = useState("");
 
   const handleAddTask = () => {
-    if (taskInput.trim() === "") return;
-    setTasks([...tasks, { id: Date.now().toString(), title: taskInput }]);
+    dispatch({ type: "ADD_TODO", payload: taskInput });
     setTaskInput("");
+  };
+
+  const handleToggleTask = (id: string) => {
+    dispatch({ type: "TOGGLE_TODO", payload: id });
   };
 
   const handleDeleteTask = (id: string) => {
@@ -29,13 +80,14 @@ const E5 = () => {
       { text: "Hủy", style: "cancel" },
       {
         text: "Xóa",
-        onPress: () => setTasks(tasks.filter((task) => task.id !== id)),
+        onPress: () => dispatch({ type: "DELETE_TODO", payload: id }),
       },
     ]);
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Todo List</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -52,10 +104,30 @@ const E5 = () => {
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           style={styles.list}
-          data={tasks}
+          data={state.todos}
           renderItem={({ item }) => (
-            <View style={styles.taskContainer}>
-              <Text>{item.title}</Text>
+            <View
+              style={[
+                styles.taskContainer,
+                item.completed && styles.completedTask,
+              ]}
+            >
+              <TouchableOpacity
+                style={styles.taskContent}
+                onPress={() => handleToggleTask(item.id)}
+              >
+                <Text
+                  style={[
+                    styles.taskText,
+                    item.completed && styles.completedText,
+                  ]}
+                >
+                  {item.name}
+                </Text>
+                <Text style={styles.statusText}>
+                  {item.completed ? "✓ Hoàn thành" : "⏳ Chưa hoàn thành"}
+                </Text>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonDelete}
                 onPress={() => handleDeleteTask(item.id)}
@@ -87,6 +159,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
+    marginBottom: 20,
   },
   input: {
     flex: 1,
@@ -120,6 +193,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     backgroundColor: "#fff",
+  },
+  completedTask: {
+    backgroundColor: "#f0f8f0",
+    borderColor: "#4CAF50",
+  },
+  taskContent: {
+    flex: 1,
+    marginRight: 10,
+  },
+  taskText: {
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  completedText: {
+    textDecorationLine: "line-through",
+    color: "#666",
+  },
+  statusText: {
+    fontSize: 12,
+    color: "#666",
   },
   list: {
     flex: 1,
