@@ -1,28 +1,28 @@
 export const COLORS = {
-  primary: '#0066FF',
-  primaryDark: '#0052CC',
-  primaryLight: '#3385FF',
-  secondary: '#6C757D',
-  secondaryDark: '#545B62',
-  secondaryLight: '#ADB5BD',
-  text: '#212529',
-  textSecondary: '#6C757D',
-  textLight: '#ADB5BD',
-  textWhite: '#FFFFFF',
-  background: '#FFFFFF',
-  backgroundSecondary: '#F8F9FA',
-  backgroundDark: '#343A40',
-  success: '#28A745',
-  warning: '#FFC107',
-  error: '#DC3545',
-  info: '#17A2B8',
-  border: '#DEE2E6',
-  borderLight: '#E9ECEF',
-  borderDark: '#ADB5BD',
-  inputBackground: '#FFFFFF',
-  inputBorder: '#CED4DA',
-  inputFocus: '#80BDFF',
-  inputPlaceholder: '#6C757D',
+  primary: "#0066FF",
+  primaryDark: "#0052CC",
+  primaryLight: "#3385FF",
+  secondary: "#6C757D",
+  secondaryDark: "#545B62",
+  secondaryLight: "#ADB5BD",
+  text: "#212529",
+  textSecondary: "#6C757D",
+  textLight: "#ADB5BD",
+  textWhite: "#FFFFFF",
+  background: "#FFFFFF",
+  backgroundSecondary: "#F8F9FA",
+  backgroundDark: "#343A40",
+  success: "#28A745",
+  warning: "#FFC107",
+  error: "#DC3545",
+  info: "#17A2B8",
+  border: "#DEE2E6",
+  borderLight: "#E9ECEF",
+  borderDark: "#ADB5BD",
+  inputBackground: "#FFFFFF",
+  inputBorder: "#CED4DA",
+  inputFocus: "#80BDFF",
+  inputPlaceholder: "#6C757D",
 } as const;
 
 export const FONT_SIZES = {
@@ -68,12 +68,12 @@ export const BORDER_RADIUS = {
 } as const;
 
 export const FONT_WEIGHTS = {
-  light: '300',
-  normal: '400',
-  medium: '500',
-  semibold: '600',
-  bold: '700',
-  extrabold: '800',
+  light: "300",
+  normal: "400",
+  medium: "500",
+  semibold: "600",
+  bold: "700",
+  extrabold: "800",
 } as const;
 
 export const SHADOWS = {
@@ -97,7 +97,7 @@ export const SHADOWS = {
   },
   lg: {
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.30,
+    shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
   },
@@ -110,8 +110,8 @@ export const CONTAINER_STYLES = {
   },
   centered: {
     flex: 1,
-    justifyContent: 'center' as const,
-    alignItems: 'center' as const,
+    justifyContent: "center" as const,
+    alignItems: "center" as const,
     padding: SPACING.md,
   },
   padded: {
@@ -124,29 +124,29 @@ export const CONTAINER_STYLES = {
     ...SHADOWS.sm,
   },
   form: {
-    width: '100%',
+    width: "100%",
     padding: SPACING.md,
     gap: SPACING.sm,
   },
   row: {
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
   },
   column: {
-    flexDirection: 'column' as const,
+    flexDirection: "column" as const,
   },
   wrapper: {
-    width: '100%',
+    width: "100%",
     flex: 1,
-    flexDirection: 'column' as const,
-    justifyContent: 'center' as const,
-    alignItems: 'center' as const,
+    flexDirection: "column" as const,
+    justifyContent: "center" as const,
+    alignItems: "center" as const,
   },
 } as const;
 
 export const INPUT_STYLES = {
   base: {
-    width: '100%',
+    width: "100%",
     padding: SPACING.sm,
     borderRadius: BORDER_RADIUS.md,
     backgroundColor: COLORS.inputBackground,
@@ -166,11 +166,11 @@ export const INPUT_STYLES = {
 
 export const BUTTON_STYLES = {
   base: {
-    width: '100%',
+    width: "100%",
     padding: SPACING.sm,
     borderRadius: BORDER_RADIUS.md,
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
   },
   primary: {
     backgroundColor: COLORS.primary,
@@ -185,7 +185,7 @@ export const BUTTON_STYLES = {
     backgroundColor: COLORS.error,
   },
   outline: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderWidth: 1,
     borderColor: COLORS.primary,
   },
@@ -216,6 +216,6 @@ export const TEXT_STYLES = {
     fontSize: FONT_SIZES.md,
     fontWeight: FONT_WEIGHTS.semibold,
     color: COLORS.textWhite,
-    textAlign: 'center' as const,
+    textAlign: "center" as const,
   },
 } as const;

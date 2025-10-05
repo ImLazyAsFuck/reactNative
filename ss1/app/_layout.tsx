@@ -1,13 +1,12 @@
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import Demo from './demo'
+import React from "react";
+import { Stack } from "expo-router";
 
 const Rootlayout = () => {
   return (
-    <SafeAreaView>
-      <Demo/>
-    </SafeAreaView>
-  )
-}
+    <Stack>
+      <Stack.Screen name="tabs" options={{ headerShown: false }} />
+    </Stack>
+  );
+};
 
-export default Rootlayout
+export default Rootlayout;
