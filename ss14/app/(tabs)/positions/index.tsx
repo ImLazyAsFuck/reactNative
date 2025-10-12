@@ -14,11 +14,14 @@ export default function Positions() {
   };
 
   useEffect(() => {
-    try {
-      fetchPositions();
-    } catch (error) {
-      console.error("Failed to fetch positions:", error);
-    }
+    const load = async () => {
+      try {
+        await fetchPositions();
+      } catch (error) {
+        console.error("Failed to fetch positions:", error);
+      }
+    };
+    load();
   }, []);
   return (
     <View style={styles.container}>
@@ -26,7 +29,9 @@ export default function Positions() {
         style={styles.list}
         data={positions}
         renderItem={({ item }) => {
-          return <PositionItem fetchPositions={fetchPositions} position={item} />;
+          return (
+            <PositionItem fetchPositions={fetchPositions} position={item} />
+          );
         }}
         keyExtractor={(item) => item.id.toString()}
         onRefresh={fetchPositions}

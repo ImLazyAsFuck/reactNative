@@ -10,7 +10,10 @@ interface PositionItemProps {
   fetchPositions?: () => void;
 }
 
-export default function PositionItem({ position, fetchPositions }: PositionItemProps) {
+export default function PositionItem({
+  position,
+  fetchPositions,
+}: PositionItemProps) {
   const handleDelete = (id: number) => {
     try {
       Alert.alert(
@@ -70,7 +73,7 @@ export default function PositionItem({ position, fetchPositions }: PositionItemP
           <TouchableOpacity
             onPress={() => {
               router.push(
-                `/postitions/edit/${position.id}` as RelativePathString
+                `positions/edit?id=${position.id}` as RelativePathString
               );
             }}
           >
@@ -101,9 +104,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   info: {
-    width: "50%",
+    width: "40%",
     flexDirection: "column",
-    gap: 5,
+    gap: 10,
     justifyContent: "center",
   },
   title: {
@@ -111,10 +114,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   status: {
-    paddingVertical: 2,
+    paddingVertical: 4,
     paddingHorizontal: 5,
     borderRadius: 50,
-    width: "60%",
   },
   action: {
     flexDirection: "row",
