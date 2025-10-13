@@ -14,5 +14,10 @@ export interface EmployeeResponse {
   employeeCode: string;
   employeeName: string;
   phoneNumber: string;
+  positions: Position | object;
+}
+
+export interface Position {
+  id: number;
   positionName: string;
 }
