@@ -1,5 +1,5 @@
 import { updateEmployee } from "@/apis/employee.apis";
-import { Employee } from "@/interfaces/employee.interface";
+import { Employee, EmployeeUpdateRequest } from "@/interfaces/employee.interface";
 import { axiosInstance } from "@/utils/axios-instance";
 import { Picker } from "@react-native-picker/picker";
 import { router, useLocalSearchParams } from "expo-router";
@@ -16,12 +16,11 @@ import {
 } from "react-native";
 
 export default function EditEmployee() {
-  const { id } = useLocalSearchParams(); // Lấy id từ route
-  const [employee, setEmployee] = useState<Employee | null>(null);
+  const { id } = useLocalSearchParams();
+  const [employee, setEmployee] = useState<EmployeeUpdateRequest | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Lấy dữ liệu nhân viên hiện tại
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
@@ -46,9 +45,9 @@ export default function EditEmployee() {
     if (!employee) return;
     setSaving(true);
     try {
-      await updateEmployee(String(id), employee);
+      await updateEmployee(Number(Array.isArray(id) ? id[0] : id), employee);
       Alert.alert("Thành công", "Cập nhật thông tin nhân viên thành công!");
-      router.back();
+      router.push("/employees");
     } catch (error) {
       console.error(error);
       Alert.alert("Lỗi", "Không thể cập nhật thông tin nhân viên!");
@@ -92,12 +91,6 @@ export default function EditEmployee() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Địa chỉ"
-        value={employee.address}
-        onChangeText={(t) => handleChange("address", t)}
-      />
-      <TextInput
-        style={styles.input}
         placeholder="Ngày sinh (YYYY-MM-DD)"
         value={employee.dateBirth}
         onChangeText={(t) => handleChange("dateBirth", t)}
@@ -114,25 +107,6 @@ export default function EditEmployee() {
           <Picker.Item label="Khác" value="OTHER" />
         </Picker>
       </View>
-
-      <Text style={styles.label}>Trạng thái</Text>
-      <View style={styles.pickerWrapper}>
-        <Picker
-          selectedValue={employee.employeeStatus}
-          onValueChange={(value) => handleChange("employeeStatus", value)}
-        >
-          <Picker.Item label="Đang làm việc" value="WORKING" />
-          <Picker.Item label="Tạm nghỉ" value="INACTIVE" />
-          <Picker.Item label="Đã nghỉ việc" value="RESIGNED" />
-        </Picker>
-      </View>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={employee.email}
-        onChangeText={(t) => handleChange("email", t)}
-      />
       <TextInput
         style={styles.input}
         placeholder="Số điện thoại"

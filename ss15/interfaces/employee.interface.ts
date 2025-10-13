@@ -9,6 +9,16 @@ export interface Employee {
   phoneNumber: string;
 }
 
+export interface EmployeeUpdateRequest {
+  employeeCode: string;
+  employeeName: string;
+  phoneNumber: string;
+  gender: "MALE" | "FEMALE" | "OTHER";
+  dateBirth: string;
+  positionId: number;
+}
+
+
 export interface EmployeeResponse {
   id: number;
   employeeCode: string;
