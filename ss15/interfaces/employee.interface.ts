@@ -1,0 +1,18 @@
+export interface Employee {
+  employeeCode: string;
+  employeeName: string;
+  employeeStatus: "WORKING" | "INACTIVE" | "RESIGNED";
+  address: string;
+  dateBirth: string;
+  gender: "MALE" | "FEMALE" | "OTHER";
+  email: string;
+  phoneNumber: string;
+}
+
+export interface EmployeeResponse {
+  id: number;
+  employeeCode: string;
+  employeeName: string;
+  phoneNumber: string;
+  positionName: string;
+}
