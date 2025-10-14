@@ -1,4 +1,8 @@
-import { deletePosition, getAllPosition, togglePositionStatus } from "@/apis/position.apis";
+import {
+  deletePosition,
+  getAllPosition,
+  togglePositionStatus,
+} from "@/apis/position.apis";
 import { Position } from "@/interfaces/position.interface";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,6 +21,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function PositionListScreen() {
   const positions = useSelector((state: RootState) => state.position.data);
+
+  const [localStatus, setLocalStatus] = React.useState<Record<number, boolean>>(
+    {}
+  );
+
   const dispatch = useDispatch<AppDispatch>();
 
   const handleDeletePress = (id: number) => {
@@ -30,16 +39,28 @@ export default function PositionListScreen() {
     ]);
   };
 
-  const changePositionStatus = (id: number) => {
-    dispatch(togglePositionStatus(id));
-  }
+  const changePositionStatus = (id: number, current: boolean) => {
+    const nextState = !current;
+    setLocalStatus((prev) => ({ ...prev, [id]: nextState }));
+    dispatch(togglePositionStatus(id))
+      .unwrap()
+      .then(() => {})
+      .catch(() => {
+        setLocalStatus((prev) => ({ ...prev, [id]: current }));
+        Alert.alert("Lỗi", "Không thể thay đổi trạng thái. Vui lòng thử lại.");
+      });
+  };
 
   useEffect(() => {
     dispatch(getAllPosition());
   }, [dispatch]);
 
   const renderItem = ({ item }: { item: Position }) => {
-    const isActive = item.positionStatus === "ACTIVE";
+    const isActive =
+      localStatus[item.id] !== undefined
+        ? localStatus[item.id]
+        : item.positionStatus === "ACTIVE";
+
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -62,9 +83,10 @@ export default function PositionListScreen() {
           <Switch
             trackColor={{ false: "#767577", true: "#63B3ED" }}
             thumbColor={isActive ? "#3182CE" : "#f4f3f4"}
-            onValueChange={() => changePositionStatus(item.id)}
+            onValueChange={() => changePositionStatus(item.id, isActive)}
             value={isActive}
           />
+
           <TouchableOpacity
             style={{ marginLeft: 15 }}
             onPress={() =>
@@ -95,7 +117,7 @@ export default function PositionListScreen() {
           headerRight: () => (
             <TouchableOpacity
               onPress={() =>
-                router.push("/positions/add" as RelativePathString)
+                router.push("/e6-10/positions/add" as RelativePathString)
               }
             >
               <Ionicons name="add-circle" size={32} color="#38A169" />

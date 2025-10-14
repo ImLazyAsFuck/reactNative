@@ -15,7 +15,12 @@ export default function EditPositionScreen() {
 
   const handleUpdatePosition = async (data: any) => {
     if (position) {
-      await dispatch(updatePosition(data));
+      await dispatch(
+        updatePosition({
+          id: positionId,
+          position: data,
+        })
+      );
       if (router.canGoBack()) {
         router.push("/e6-10/positions");
       }
