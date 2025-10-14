@@ -29,11 +29,42 @@ export default function PositionListScreen() {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleDeletePress = (id: number) => {
+    console.log(`[Delete] Attempting to delete position with ID: ${id}`);
     Alert.alert("Xóa vị trí", "Bạn có chắc chắn muốn xóa vị trí này?", [
       { text: "Hủy", style: "cancel" },
       {
         text: "Xóa",
-        onPress: () => dispatch(deletePosition(id)),
+        onPress: async () => {
+          try {
+            console.log(
+              `[Delete] Dispatching delete action for position ID: ${id}`
+            );
+            const resultAction = await dispatch(deletePosition(id));
+
+            if (deletePosition.fulfilled.match(resultAction)) {
+              console.log(
+                "[Delete] Successfully deleted position:",
+                resultAction.payload
+              );
+              dispatch(getAllPosition());
+            } else if (deletePosition.rejected.match(resultAction)) {
+              const error = resultAction.payload as
+                | { message?: string; error?: string }
+                | undefined;
+              Alert.alert(
+                "Lỗi",
+                `Không thể xóa vị trí: ${
+                  error?.message || error?.error || "Lỗi không xác định"
+                }`
+              );
+            }
+          } catch (error) {
+            Alert.alert(
+              "Lỗi",
+              `Đã xảy ra lỗi không mong muốn khi xóa vị trí ${error}`
+            );
+          }
+        },
         style: "destructive",
       },
     ]);
