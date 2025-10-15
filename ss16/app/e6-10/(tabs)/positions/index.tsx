@@ -29,7 +29,6 @@ export default function PositionListScreen() {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleDeletePress = (id: number) => {
-    console.log(`[Delete] Attempting to delete position with ID: ${id}`);
     Alert.alert("Xóa vị trí", "Bạn có chắc chắn muốn xóa vị trí này?", [
       { text: "Hủy", style: "cancel" },
       {
@@ -163,6 +162,8 @@ export default function PositionListScreen() {
         ListEmptyComponent={
           <Text style={styles.emptyText}>Chưa có vị trí nào.</Text>
         }
+        onRefresh={() => dispatch(getAllPosition())}
+        refreshing={false}
       />
     </View>
   );
