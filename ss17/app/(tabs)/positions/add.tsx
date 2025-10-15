@@ -1,25 +1,11 @@
-import { createPosition } from "@/apis/position.apis";
-import PositionForm from "@/components/PositionForm";
-import { PositionRequest } from "@/interfaces/position.interface";
-import { router } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, Alert } from "react-native";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ScrollView, StyleSheet } from "react-native";
+import PositionForm from "@/components/PositionForm";
+import { useCreatePosition } from "@/hooks/usePosition";
+import { PositionRequest } from "@/interfaces/position.interface";
 
 export default function AddPositionScreen() {
-  const queryClient = useQueryClient();
-
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: (data: Omit<PositionRequest, "id">) => createPosition(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["positions"] });
-      Alert.alert("Thành công", "Thêm vị trí mới thành công!");
-      router.push("/positions");
-    },
-    onError: (error: any) => {
-      Alert.alert("Lỗi", error?.response?.data?.message || "Không thể thêm vị trí.");
-    },
-  });
+  const { mutateAsync, isPending } = useCreatePosition();
 
   const handleAddPosition = async (data: Omit<PositionRequest, "id">) => {
     await mutateAsync(data);

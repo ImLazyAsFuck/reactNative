@@ -1,5 +1,4 @@
-import { getPosition } from "@/apis/position.apis";
-import { useQuery } from "@tanstack/react-query";
+import { usePositionDetails } from "@/hooks/usePosition";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import {
@@ -12,12 +11,14 @@ import {
 
 export default function PositionDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const positionId = Number(id);
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["position", +id],
-    queryFn: () => getPosition(+id),
-    enabled: !!+id,
-  });
+  const {
+    data: position,
+    isLoading,
+    isError,
+    error,
+  } = usePositionDetails(positionId);
 
   if (isLoading)
     return (
@@ -27,6 +28,7 @@ export default function PositionDetailScreen() {
         color="#3182CE"
       />
     );
+
   if (isError)
     return (
       <Text style={styles.errorText}>
@@ -34,7 +36,6 @@ export default function PositionDetailScreen() {
       </Text>
     );
 
-  const position = data?.data;
   if (!position)
     return <Text style={styles.errorText}>Không tìm thấy vị trí.</Text>;
 

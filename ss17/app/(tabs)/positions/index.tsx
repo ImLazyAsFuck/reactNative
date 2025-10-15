@@ -1,12 +1,11 @@
+import { getAllPosition } from "@/apis/position.apis";
 import {
-  deletePosition,
-  getAllPosition,
-  togglePositionStatus,
-} from "@/apis/position.apis";
-import { PositionStatus } from "@/enums/position.enum";
+  useDeletePosition,
+  useTogglePositionStatus,
+} from "@/hooks/usePosition";
 import { Position } from "@/interfaces/position.interface";
 import { Ionicons } from "@expo/vector-icons";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { RelativePathString, router, Stack } from "expo-router";
 import React from "react";
 import {
@@ -31,42 +30,8 @@ export default function PositionListScreen() {
     },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => deletePosition(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["positions"] }),
-  });
-
-  const toggleMutation = useMutation({
-    mutationFn: (id: number) => togglePositionStatus(id),
-    onMutate: async (id: number) => {
-      await queryClient.cancelQueries({ queryKey: ["positions"] });
-      const previousPositions = queryClient.getQueryData<Position[]>([
-        "positions",
-      ]);
-      queryClient.setQueryData<Position[]>(["positions"], (old) =>
-        old?.map((p) =>
-          p.id === id
-            ? {
-                ...p,
-                positionStatus:
-                  p.positionStatus === PositionStatus.ACTIVE
-                    ? PositionStatus.INACTIVE
-                    : PositionStatus.ACTIVE,
-              }
-            : p
-        )
-      );
-      return { previousPositions };
-    },
-    onError: (_err, _id, context: any) => {
-      if (context?.previousPositions) {
-        queryClient.setQueryData(["positions"], context.previousPositions);
-      }
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["positions"] });
-    },
-  });
+  const deleteMutation = useDeletePosition();
+  const toggleMutation = useTogglePositionStatus();
 
   const handleDeletePress = (id: number) => {
     Alert.alert("Xóa vị trí", "Bạn có chắc chắn muốn xóa vị trí này?", [
