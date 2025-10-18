@@ -44,7 +44,7 @@ const PostRow = ({
     </View>
     <View style={styles.actions}>
       <TouchableOpacity
-        onPress={() => router.push(`/profile/edit-post?postId=${item.id}`)}
+        onPress={() => router.push(`/profile/edit-post?id=${item.id}`)}
       >
         <Ionicons name="pencil-outline" size={22} color="#3b82f6" />
       </TouchableOpacity>
