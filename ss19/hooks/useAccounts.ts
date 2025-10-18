@@ -3,6 +3,7 @@ import { UserRequest, UserResponse } from "@/interfaces/account.interface";
 import { SingleResponse } from "@/utils/response-data";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { router } from "expo-router";
 import { Alert } from "react-native";
 
 export const useFetchUserProfile = () => {
@@ -30,15 +31,21 @@ export const useUpdateProfile = () => {
 export const useLogout = () => {
   const queryClient = useQueryClient();
 
+  const navigateToLogin = async () => {
+    await AsyncStorage.multiRemove(["ACCESS_TOKEN", "REFRESH_TOKEN", "USER"]);
+    queryClient.clear();
+    router.replace("/login");
+  };
+
   return useMutation<SingleResponse<null>, Error>({
     mutationFn: logout,
     onSuccess: () => {
-      AsyncStorage.multiRemove(["ACCESS_TOKEN", "REFRESH_TOKEN", "USER"]);
       Alert.alert("Đăng xuất", "Bạn đã đăng xuất khỏi thiết bị này!");
-      queryClient.clear();
+      navigateToLogin();
     },
     onError: (error: any) => {
       Alert.alert("Lỗi", error?.message || "Không thể đăng xuất");
+      navigateToLogin();
     },
   });
 };
