@@ -11,7 +11,7 @@ import {
 import { CommentResponse } from "@/interfaces/comment.interface";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -41,10 +41,24 @@ const Comment = ({
 }) => {
   const { data: likeData } = useFetchCommentLikesByCommentId(comment.id);
   const toggleLikeMutation = useToggleLikeArticleOrComment();
+  const [localLiked, setLocalLiked] = useState<boolean>(false);
+  const [localLikeCount, setLocalLikeCount] = useState<number>(
+    comment.likeCount ?? 0
+  );
+
+  useEffect(() => {
+    if (likeData?.data) {
+      setLocalLiked(likeData.data.liked ?? false);
+      setLocalLikeCount(likeData.data.likeCount ?? 0);
+    }
+  }, [likeData]);
 
   const handleLike = () => {
+    setLocalLiked((prev) => !prev);
+    setLocalLikeCount((prev) => prev + (localLiked ? -1 : 1));
+
     toggleLikeMutation.mutate({
-      articleId, // ✅ luôn có articleId
+      articleId,
       commentId: comment.id,
     });
   };
@@ -78,18 +92,18 @@ const Comment = ({
               disabled={toggleLikeMutation.isPending}
             >
               <Ionicons
-                name={liked ? "heart" : "heart-outline"}
+                name={localLiked ? "heart" : "heart-outline"}
                 size={18}
-                color={liked ? "#e53e3e" : "gray"}
+                color={localLiked ? "#e53e3e" : "gray"}
               />
               <Text
                 style={[
                   styles.commentActionText,
-                  liked && { color: "#e53e3e", fontWeight: "600" },
+                  localLiked && { color: "#e53e3e", fontWeight: "600" },
                 ]}
               >
                 {" "}
-                {likeCount}
+                {localLikeCount}
               </Text>
             </TouchableOpacity>
 

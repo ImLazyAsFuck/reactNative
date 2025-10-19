@@ -11,7 +11,7 @@ import { Alert } from "react-native";
 
 const getCurrentUserId = async (): Promise<number | null> => {
   try {
-    const userJson = await AsyncStorage.getItem("user");
+    const userJson = await AsyncStorage.getItem("USER");
     if (!userJson) return null;
     const user = JSON.parse(userJson);
     return user.id ?? null;
