@@ -9,13 +9,13 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useContactsQuery } from "../../hooks/useContactData";
+import { useContactsQuery, useToggleBlockContactMutation } from "../../hooks/useContactData";
 
 export default function BlacklistScreen() {
-  // Sử dụng hook chung
-  const { contacts, toggleBlockStatus } = useContactsQuery();
+  const { data: contactsData } = useContactsQuery();
+  const toggleBlockMutation = useToggleBlockContactMutation();
 
-  // Lọc danh sách bị chặn
+  const contacts = contactsData ?? [];
   const blockedContacts = contacts.filter((c) => c.isBlocked);
 
   // Giả lập refresh khi quay lại tab
@@ -26,10 +26,10 @@ export default function BlacklistScreen() {
     }, [])
   );
 
-  const handleUnblock = (id: string) => {
-    // Đây là UI-only, ta chỉ gọi hàm từ hook
-    toggleBlockStatus(id);
-    console.log(`Bỏ chặn (UI-only) cho ID: ${id}`);
+  const handleUnblock = async (id: string) => {
+    try {
+      await toggleBlockMutation.mutateAsync(id);
+    } catch {}
   };
 
   return (
@@ -43,6 +43,7 @@ export default function BlacklistScreen() {
         <FlatList
           data={blockedContacts}
           keyExtractor={(item) => item.id}
+          extraData={refresh}
           renderItem={({ item }) => (
             <View style={styles.itemContainer}>
               <View>

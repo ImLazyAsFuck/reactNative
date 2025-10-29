@@ -24,7 +24,7 @@ export const useContactsQuery = () => {
     queryKey: ["contacts"],
     queryFn: async () => {
       const res = await apiFetchContacts();
-      return res.data;
+      return (res.data || []).map(mapApiContactToFront);
     },
   });
 };

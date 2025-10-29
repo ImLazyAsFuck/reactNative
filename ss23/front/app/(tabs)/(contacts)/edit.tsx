@@ -12,7 +12,7 @@ import {
 } from "../../../hooks/useContactData";
 import { ContactFormData, ContactTag } from "../../../types";
 
-const phoneRegExp = /^(0|\+84)[3|5|7|8|9|1[2|6|8|9]]+([0-9]{8})$/;
+const phoneRegExp = /^(0|\+84)(3|5|7|8|9)\d{8}$/;
 const schema = yup.object().shape({
   name: yup
     .string()

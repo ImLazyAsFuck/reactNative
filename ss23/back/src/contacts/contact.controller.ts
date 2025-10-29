@@ -30,7 +30,7 @@ export class ContactController {
       example: {
         name: 'John Doe',
         phone: '+84901234567',
-        tag: 'FRIEND',
+        tag: 'Friend',
       },
     },
   })
@@ -60,7 +60,7 @@ export class ContactController {
       example: {
         name: 'Jane Doe',
         phone: '+84123456789',
-        tag: 'COLLEAGUE',
+        tag: 'Colleague',
       },
     },
   })
