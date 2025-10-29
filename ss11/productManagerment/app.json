@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "phoneBook",
-    "slug": "phoneBook",
+    "name": "productManagerment",
+    "slug": "productManagerment",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "phonebook",
+    "scheme": "productmanagerment",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
